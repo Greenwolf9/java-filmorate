@@ -5,16 +5,17 @@ import java.time.LocalDate;
 
 
 @Data
-
+@NoArgsConstructor
 public class User {
 
     private int id = 1;
-    private final String email;
-    private final String login;
+    private String email;
+    private  String login;
     private String name;
-    private final LocalDate birthday;
+    private LocalDate birthday;
 
-public User(String email, String login, String name, LocalDate birthday){
+
+public User(final String email, final String login, String name, final LocalDate birthday){
     this.id = generateId();
     this.email = email;
     this.login = login;
