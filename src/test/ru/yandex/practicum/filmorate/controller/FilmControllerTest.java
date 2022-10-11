@@ -20,7 +20,7 @@ class FilmControllerTest {
                 LocalDate.of(2022, 9,29), 45);
 
         FilmValidationException thrown = assertThrows(FilmValidationException.class, () ->{
-            filmController.create(film);
+            filmController.createFilm(film);
         });
         assertEquals("Film has no name.", thrown.getMessage());
 
@@ -32,7 +32,7 @@ class FilmControllerTest {
                 LocalDate.of(2022, 9,29), 45);
 
         FilmValidationException thrown2 = assertThrows(FilmValidationException.class, () ->{
-            filmController.create(film2);
+            filmController.createFilm(film2);
         });
         assertEquals("Description is too long.", thrown2.getMessage());
 
@@ -40,7 +40,7 @@ class FilmControllerTest {
                 LocalDate.of(2022, 9,29), -45);
 
         FilmValidationException thrown3 = assertThrows(FilmValidationException.class, () ->{
-            filmController.create(film3);
+            filmController.createFilm(film3);
         });
         assertEquals("Duration has to be more than 0", thrown3.getMessage());
 
@@ -48,7 +48,7 @@ class FilmControllerTest {
                 LocalDate.of(1800, 9,29), 45);
 
         FilmValidationException thrown4 = assertThrows(FilmValidationException.class, () ->{
-            filmController.create(film4);
+            filmController.createFilm(film4);
         });
         assertEquals("The film has to be released after 28/12/1895", thrown4.getMessage());
     }

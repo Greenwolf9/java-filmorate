@@ -22,20 +22,20 @@ public class Film {
     private Set<Integer> userIds = new HashSet<>();
     private int rate;
 
-    public Film(String name, String description, LocalDate releaseDate, int duration){
+    public Film(String name, String description, LocalDate releaseDate, int duration) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
     }
 
-    public void addLike(int id){
+    public void addLike(int id) {
         userIds.add(id);
         rate = userIds.size();
     }
 
-    public void removeLike (int id) throws DoesntExistException{
-        if(!userIds.contains(id)) {
+    public void removeLike(int id) throws DoesntExistException {
+        if (!userIds.contains(id)) {
             throw new DoesntExistException("No Like");
         }
         userIds.remove(id);

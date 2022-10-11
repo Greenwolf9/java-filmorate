@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
 
     @Override
     public void create(User user) throws AlreadyExistException {
-        if(users.containsKey(user.getId())){
+        if (users.containsKey(user.getId())) {
             throw new AlreadyExistException("User already exists.");
         }
         users.put(user.getId(), user);
@@ -29,7 +29,7 @@ public class InMemoryUserStorage implements UserStorage{
     }
 
     @Override
-    public void update(User user) throws DoesntExistException{
+    public void update(User user) throws DoesntExistException {
         if (!users.containsKey(user.getId())) {
             throw new DoesntExistException("User doesn't exist.");
         }
@@ -37,7 +37,7 @@ public class InMemoryUserStorage implements UserStorage{
     }
 
     @Override
-    public List<User> getAll(){
+    public List<User> getAll() {
         return new ArrayList<>(users.values());
     }
 
@@ -46,6 +46,7 @@ public class InMemoryUserStorage implements UserStorage{
     public User get(int id) {
         if (!users.containsKey(id)) {
             throw new DoesntExistException("User doesn't exist.");
-        }return users.get(id);
+        }
+        return users.get(id);
     }
 }

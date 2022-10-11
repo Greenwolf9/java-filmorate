@@ -1,4 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
+
 import lombok.*;
 
 import java.time.LocalDate;
@@ -18,17 +19,18 @@ public class User {
     private LocalDate birthday;
     private Set<Integer> friendsIds = new HashSet<>();
 
-    public User(String email, String login, String name, LocalDate birthday){
+    public User(String email, String login, String name, LocalDate birthday) {
         this.email = email;
         this.login = login;
         this.name = name;
         this.birthday = birthday;
     }
 
-    public void addToFriend(int friendsId){
+    public void addToFriend(int friendsId) {
         friendsIds.add(friendsId);
     }
-    public void deleteFromFriend(int friendsId){
+
+    public void deleteFromFriend(int friendsId) {
         friendsIds.remove(friendsId);
     }
 

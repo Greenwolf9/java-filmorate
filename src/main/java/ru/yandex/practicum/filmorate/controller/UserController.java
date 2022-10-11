@@ -1,4 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import ru.yandex.practicum.filmorate.exception.DoesntExistException;
 import ru.yandex.practicum.filmorate.exception.UserValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
+
 import java.util.List;
 import java.util.Set;
 
@@ -16,14 +18,15 @@ import java.util.Set;
 public class UserController {
 
     private final static Logger log = LoggerFactory.getLogger(UserController.class);
-    UserService userService;
+    private UserService userService;
+
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         log.info("GET / users // The current amount of Users: " + userService.getAllUsers().size());
         return userService.getAllUsers();
     }
@@ -48,30 +51,30 @@ public class UserController {
     }
 
     @DeleteMapping
-    public void deleteUser(@RequestBody User user){
+    public void deleteUser(@RequestBody User user) {
         userService.delete(user);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addToFriend(@PathVariable int id, @PathVariable int friendId){
-        log.info("PUT/{id} "+ id + "/friends/{friendId} " + friendId);
+    public void addToFriend(@PathVariable int id, @PathVariable int friendId) {
+        log.info("PUT/{id} " + id + "/friends/{friendId} " + friendId);
         userService.addToFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFromFriend(@PathVariable int id, @PathVariable int friendId){
-        log.info("DELETE /{id} "+ id + "/friends/{friendId} " + friendId);
+    public void deleteFromFriend(@PathVariable int id, @PathVariable int friendId) {
+        log.info("DELETE /{id} " + id + "/friends/{friendId} " + friendId);
         userService.deleteFromFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
-    public Set<User> getListOfFriends(@PathVariable int id){
-        log.info("GET /{id}/friends: " +userService.getAllFriendsOfUser(id).size());
+    public Set<User> getListOfFriends(@PathVariable int id) {
+        log.info("GET /{id}/friends: " + userService.getAllFriendsOfUser(id).size());
         return userService.getAllFriendsOfUser(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public Set<User> getListOfCommonFriends(@PathVariable int id, @PathVariable int otherId){
+    public Set<User> getListOfCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.getListOfCommonFriends(id, otherId);
     }
 }

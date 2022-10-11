@@ -15,33 +15,34 @@ import java.util.Set;
 
 @Service
 public class UserService {
-    InMemoryUserStorage inMemoryUserStorage;
+    private InMemoryUserStorage inMemoryUserStorage;
     private int userId = 0;
 
     @Autowired
-    public UserService(InMemoryUserStorage inMemoryUserStorage){
+    public UserService(InMemoryUserStorage inMemoryUserStorage) {
         this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return inMemoryUserStorage.getAll();
     }
 
     public User getUser(int id) {
         return inMemoryUserStorage.get(id);
-        }
-    public Set<User> getListOfCommonFriends(int id, int otherId){
+    }
+
+    public Set<User> getListOfCommonFriends(int id, int otherId) {
         User user = getUser(id);
         Set<User> friendsOfUser = new HashSet<>();
-        for (Integer friendsId: user.getFriendsIds()){
-            if(friendsId != otherId){
-            friendsOfUser.add(getUser(friendsId));
+        for (Integer friendsId : user.getFriendsIds()) {
+            if (friendsId != otherId) {
+                friendsOfUser.add(getUser(friendsId));
             }
         }
         User otherUser = getUser(otherId);
         Set<User> friendsOfOtherUser = new HashSet<>();
-        for (Integer friendsId: otherUser.getFriendsIds()){
-            if(friendsId != id) {
+        for (Integer friendsId : otherUser.getFriendsIds()) {
+            if (friendsId != id) {
                 friendsOfOtherUser.add(getUser(friendsId));
             }
         }
@@ -58,7 +59,7 @@ public class UserService {
         return user;
     }
 
-    public User updateUser(User user) throws UserValidationException, DoesntExistException{
+    public User updateUser(User user) throws UserValidationException, DoesntExistException {
         checkUserValidation(user);
         inMemoryUserStorage.update(user);
         return user;
@@ -68,39 +69,40 @@ public class UserService {
         inMemoryUserStorage.delete(user);
     }
 
-    public void addToFriend(int userId, int friendsId){
+    public void addToFriend(int userId, int friendsId) {
         final User user = getUser(userId);
         final User friend = getUser(friendsId);
-        if(friendsId > 0 && getAllUsers().contains(friend)) {
-        user.addToFriend(friendsId);
+        if (friendsId > 0 && getAllUsers().contains(friend)) {
+            user.addToFriend(friendsId);
         }
     }
-    public void deleteFromFriend(int userId, int friendsId){
+
+    public void deleteFromFriend(int userId, int friendsId) {
         User user = getUser(userId);
         user.deleteFromFriend(friendsId);
     }
 
-    public Set<User> getAllFriendsOfUser(int userId){
+    public Set<User> getAllFriendsOfUser(int userId) {
         User user = getUser(userId);
         Set<User> friends = new HashSet<>();
-        for (Integer friendsId: user.getFriendsIds()){
+        for (Integer friendsId : user.getFriendsIds()) {
             friends.add(getUser(friendsId));
             addToFriend(friendsId, userId);
         }
         return friends;
     }
 
-    private void checkUserValidation(User user) throws UserValidationException{
-        if(user.getEmail() == null && user.getEmail().isEmpty() || !user.getEmail().contains("@")){
+    private void checkUserValidation(User user) throws UserValidationException {
+        if (user.getEmail() == null && user.getEmail().isEmpty() || !user.getEmail().contains("@")) {
             throw new UserValidationException("Email is empty or incorrect.");
         }
-        if(user.getLogin().isEmpty() || user.getLogin().contains(" ")){
+        if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
             throw new UserValidationException("Login is incorrect.");
         }
-        if(user.getBirthday().isAfter(LocalDate.now())){
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new UserValidationException("Birthday is incorrect.");
         }
-        if(user.getName().isEmpty()){
+        if (user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
     }
