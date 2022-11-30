@@ -3,9 +3,9 @@ package ru.yandex.practicum.filmorate.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
-import ru.yandex.practicum.filmorate.dao.GenreImpl;
-import ru.yandex.practicum.filmorate.dao.LikesImpl;
-import ru.yandex.practicum.filmorate.dao.RatingMpaImpl;
+import ru.yandex.practicum.filmorate.dao.GenreDbStorage;
+import ru.yandex.practicum.filmorate.dao.LikeDbStorage;
+import ru.yandex.practicum.filmorate.dao.MpaDbStorage;
 import ru.yandex.practicum.filmorate.exception.FilmValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class FilmControllerTest {
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     private FilmStorage filmStorage = new FilmDbStorage(jdbcTemplate);
-    private RatingMpaImpl mpa = new RatingMpaImpl(jdbcTemplate);
-    private GenreImpl genre = new GenreImpl(jdbcTemplate);
-    private LikesImpl likes = new LikesImpl(jdbcTemplate);
+    private MpaDbStorage mpa = new MpaDbStorage(jdbcTemplate);
+    private GenreDbStorage genre = new GenreDbStorage(jdbcTemplate);
+    private LikeDbStorage likes = new LikeDbStorage(jdbcTemplate);
 
 
     FilmService filmService = new FilmService(filmStorage, mpa, genre, likes);

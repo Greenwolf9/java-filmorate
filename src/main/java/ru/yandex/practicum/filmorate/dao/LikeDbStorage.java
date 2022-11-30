@@ -7,11 +7,11 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.List;
 
 @Component
-public class LikesImpl {
+public class LikeDbStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public LikesImpl(JdbcTemplate jdbcTemplate) {
+    public LikeDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

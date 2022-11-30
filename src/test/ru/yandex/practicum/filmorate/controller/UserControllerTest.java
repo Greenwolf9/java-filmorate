@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ru.yandex.practicum.filmorate.dao.FriendsImpl;
+import ru.yandex.practicum.filmorate.dao.FriendDbStorage;
 import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.exception.UserValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserControllerTest {
     private final JdbcTemplate jdbcTemplate = new JdbcTemplate();
     private UserStorage userStorage = new UserDbStorage(jdbcTemplate);
-    private FriendsImpl friends = new FriendsImpl(jdbcTemplate);
+    private FriendDbStorage friends = new FriendDbStorage(jdbcTemplate);
     private UserService userService = new UserService(userStorage, friends);
     private UserController userController = new UserController(userService);
 

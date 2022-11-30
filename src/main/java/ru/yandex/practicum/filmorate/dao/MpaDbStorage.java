@@ -9,22 +9,22 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class RatingMpaImpl {
+public class MpaDbStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public RatingMpaImpl(JdbcTemplate jdbcTemplate) {
+    public MpaDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public Mpa get(int id) {
         String sql = "select * from mpa_rating where MPA_ID = ?";
-        return jdbcTemplate.queryForObject(sql, RatingMpaImpl::makeRatingMpa, id);
+        return jdbcTemplate.queryForObject(sql, MpaDbStorage::makeRatingMpa, id);
     }
 
     public List<Mpa> getAll() {
         String sql = "select * from mpa_rating";
-        final List<Mpa> mpa = jdbcTemplate.query(sql, RatingMpaImpl::makeRatingMpa);
+        final List<Mpa> mpa = jdbcTemplate.query(sql, MpaDbStorage::makeRatingMpa);
         return mpa;
     }
 

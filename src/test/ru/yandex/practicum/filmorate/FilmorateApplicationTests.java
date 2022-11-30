@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.dao.FilmDbStorage;
-import ru.yandex.practicum.filmorate.dao.GenreImpl;
-import ru.yandex.practicum.filmorate.dao.RatingMpaImpl;
+import ru.yandex.practicum.filmorate.dao.GenreDbStorage;
+import ru.yandex.practicum.filmorate.dao.MpaDbStorage;
 import ru.yandex.practicum.filmorate.dao.UserDbStorage;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -24,8 +24,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class FilmorateApplicationTests {
 	private final UserDbStorage userStorage;
 	private final FilmDbStorage filmStorage;
-	private final RatingMpaImpl mpa;
-	private final GenreImpl genre;
+	private final MpaDbStorage mpa;
+	private final GenreDbStorage genre;
 
 	@Test
 	void contextLoads() {

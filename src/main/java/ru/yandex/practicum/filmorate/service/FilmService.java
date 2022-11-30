@@ -3,9 +3,9 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.dao.GenreImpl;
-import ru.yandex.practicum.filmorate.dao.LikesImpl;
-import ru.yandex.practicum.filmorate.dao.RatingMpaImpl;
+import ru.yandex.practicum.filmorate.dao.GenreDbStorage;
+import ru.yandex.practicum.filmorate.dao.LikeDbStorage;
+import ru.yandex.practicum.filmorate.dao.MpaDbStorage;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.DoesntExistException;
 import ru.yandex.practicum.filmorate.exception.FilmValidationException;
@@ -23,16 +23,16 @@ import java.util.stream.Collectors;
 public class FilmService {
 
     private FilmStorage filmStorage;
-    private final RatingMpaImpl ratingMpaImpl;
-    private final GenreImpl genreImpl;
-    private final LikesImpl likes;
+    private final MpaDbStorage mpaDbStorage;
+    private final GenreDbStorage genreDbStorage;
+    private final LikeDbStorage likes;
 
 
     @Autowired
-    public FilmService(FilmStorage filmStorage, RatingMpaImpl ratingMpaImpl, GenreImpl genreImpl, LikesImpl likes) {
+    public FilmService(FilmStorage filmStorage, MpaDbStorage mpaDbStorage, GenreDbStorage genreDbStorage, LikeDbStorage likes) {
         this.filmStorage = filmStorage;
-        this.ratingMpaImpl = ratingMpaImpl;
-        this.genreImpl = genreImpl;
+        this.mpaDbStorage = mpaDbStorage;
+        this.genreDbStorage = genreDbStorage;
         this.likes = likes;
 
     }
@@ -43,7 +43,7 @@ public class FilmService {
                 .collect(Collectors.toMap(Film::getId, film -> film));
         List<Film> films = new ArrayList<>();
         for (Integer i : map.keySet()) {
-            final Set<Genre> genres = genreImpl.getGenreByFilmId(i);
+            final Set<Genre> genres = genreDbStorage.getGenreByFilmId(i);
             final Film film = filmStorage.get(i);
             film.setGenres(genres);
             films.add(film);
@@ -56,7 +56,7 @@ public class FilmService {
         if (!filmStorage.getAll().stream().map(Film::getId).anyMatch(f -> f == id)) {
             throw new DoesntExistException("Film id " + id + " doesn't exist");
         }
-        final Set<Genre> genres = genreImpl.getGenreByFilmId(id);
+        final Set<Genre> genres = genreDbStorage.getGenreByFilmId(id);
         final Film film = filmStorage.get(id);
         if (genres.size() > 0) {
             film.setGenres(genres);
@@ -70,7 +70,7 @@ public class FilmService {
             throw new AlreadyExistException("Film with this id {} already exists" + film.getId());
         }
         filmStorage.create(film);
-        final Set<Genre> genres = genreImpl.getGenreByFilmId(film.getId());
+        final Set<Genre> genres = genreDbStorage.getGenreByFilmId(film.getId());
         if (genres.size() > 0) {
             film.setGenres(genres);
         }
@@ -83,7 +83,7 @@ public class FilmService {
             throw new DoesntExistException("Film with this id {} doesn't exist" + film.getId());
         }
         filmStorage.update(film);
-        final Set<Genre> genres = genreImpl.getGenreByFilmId(film.getId());
+        final Set<Genre> genres = genreDbStorage.getGenreByFilmId(film.getId());
         if (genres.size() > 0) {
             film.setGenres(genres);
         }
@@ -112,26 +112,26 @@ public class FilmService {
 
     @SneakyThrows
     public Mpa getMpa(int id) {
-        if (!ratingMpaImpl.getAll().stream().map(Mpa::getId).anyMatch(m -> m == id)) {
+        if (!mpaDbStorage.getAll().stream().map(Mpa::getId).anyMatch(m -> m == id)) {
             throw new DoesntExistException("MPA with id " + id + " doesn't exist!");
         }
-        return ratingMpaImpl.get(id);
+        return mpaDbStorage.get(id);
     }
 
     public List<Mpa> getAllMpa() {
-        return ratingMpaImpl.getAll();
+        return mpaDbStorage.getAll();
     }
 
     @SneakyThrows
     public Genre getGenre(int id) {
-        if (!genreImpl.getAll().stream().map(Genre::getId).anyMatch(m -> m == id)) {
+        if (!genreDbStorage.getAll().stream().map(Genre::getId).anyMatch(m -> m == id)) {
             throw new DoesntExistException("Genre with id " + id + "doesn't exist");
         }
-        return genreImpl.get(id);
+        return genreDbStorage.get(id);
     }
 
     public List<Genre> getAllGenres() {
-        return genreImpl.getAll();
+        return genreDbStorage.getAll();
     }
 
     private void checkValidation(Film film) throws FilmValidationException {

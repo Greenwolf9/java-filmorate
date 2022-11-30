@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.dao.FriendsImpl;
+import ru.yandex.practicum.filmorate.dao.FriendDbStorage;
 import ru.yandex.practicum.filmorate.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.DoesntExistException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
@@ -17,13 +17,13 @@ import java.util.List;
 @Service
 public class UserService {
     private UserStorage userStorage;
-    private FriendsImpl friends;
+    private FriendDbStorage friends;
 
 
     private int userId = 0;
 
     @Autowired
-    public UserService(UserStorage userStorage, FriendsImpl friends) {
+    public UserService(UserStorage userStorage, FriendDbStorage friends) {
         this.userStorage = userStorage;
         this.friends = friends;
     }

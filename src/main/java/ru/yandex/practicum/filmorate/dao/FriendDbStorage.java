@@ -7,11 +7,10 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.List;
 
 @Component
-public class
-FriendsImpl {
+public class FriendDbStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    public FriendsImpl(JdbcTemplate jdbcTemplate) {
+    public FriendDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
