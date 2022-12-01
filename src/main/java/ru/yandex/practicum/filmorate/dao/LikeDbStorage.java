@@ -35,8 +35,9 @@ public class LikeDbStorage {
     }
 
     private void updateRateOfFilm(int filmId) {
-        String sql = "UPDATE films SET rate = rate + (SELECT count(user_id) from LIKES WHERE films.FILM_ID = likes.FILM_ID) " +
-                "WHERE film_id = ?";
-        jdbcTemplate.update(sql, filmId);
+        String sqlLikes = "SELECT count(user_id) from LIKES l WHERE l.FILM_ID=?";
+        int likes = jdbcTemplate.queryForObject(sqlLikes, new Object[]{filmId}, Integer.class);
+        String sql = "UPDATE films SET rate = rate + ? WHERE film_id = ?";
+        jdbcTemplate.update(sql, likes, filmId);
     }
 }

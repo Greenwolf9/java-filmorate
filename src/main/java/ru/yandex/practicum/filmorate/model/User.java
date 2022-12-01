@@ -12,6 +12,7 @@ import java.util.Set;
 public class User {
 
     private int id;
+
     private String email;
     private String login;
     private String name;

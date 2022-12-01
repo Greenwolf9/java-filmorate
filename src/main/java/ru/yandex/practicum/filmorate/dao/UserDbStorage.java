@@ -1,11 +1,13 @@
 package ru.yandex.practicum.filmorate.dao;
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.DoesntExistException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
@@ -59,9 +61,14 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
+    @SneakyThrows
     public User get(int id) {
         String sql = "SELECT * FROM users WHERE USER_ID = ?";
-        return jdbcTemplate.queryForObject(sql, UserDbStorage::makeUser, id);
+        final List<User> users =  jdbcTemplate.query(sql, UserDbStorage::makeUser, id);
+        if (users.size() != 1) {
+            throw new DoesntExistException("User id " + id + " doesn't exist");
+        }
+        return users.get(0);
     }
 
     protected static User makeUser(ResultSet rs, int rowNum) throws SQLException {

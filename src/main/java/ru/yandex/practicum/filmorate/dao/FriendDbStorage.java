@@ -26,14 +26,12 @@ public class FriendDbStorage {
 
     public List<User> getAllFriendsOfUser(int userId) {
         String sql = "select u.* from FRIENDS f,USERS u WHERE u.USER_ID=f.FRIEND_ID AND f.USER_ID = ?";
-        final List<User> users = jdbcTemplate.query(sql, UserDbStorage::makeUser, userId);
-        return users;
+        return jdbcTemplate.query(sql, UserDbStorage::makeUser, userId);
     }
 
     public List<User> getListOfCommonFriends(int id, int otherId) {
         String sql = "select u.* from USERS u, FRIENDS f, FRIENDS fr WHERE u.USER_ID = f.FRIEND_ID AND u.USER_ID = fr.FRIEND_ID AND f.USER_ID =?" +
                 "           AND fr.USER_ID =?";
-        final List<User> users = jdbcTemplate.query(sql, UserDbStorage::makeUser, id, otherId);
-        return users;
+        return jdbcTemplate.query(sql, UserDbStorage::makeUser, id, otherId);
     }
 }

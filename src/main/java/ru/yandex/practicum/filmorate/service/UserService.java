@@ -19,9 +19,6 @@ public class UserService {
     private UserStorage userStorage;
     private FriendDbStorage friends;
 
-
-    private int userId = 0;
-
     @Autowired
     public UserService(UserStorage userStorage, FriendDbStorage friends) {
         this.userStorage = userStorage;
@@ -32,12 +29,9 @@ public class UserService {
         return userStorage.getAll();
     }
 
-    @SneakyThrows
+
     public User getUser(int id) {
-        if (!userStorage.getAll().stream().map(User::getId).anyMatch(a -> a == id)) {
-            throw new DoesntExistException("User id " + id + " doesn't exist");
-        }
-        return userStorage.get(id);
+      return userStorage.get(id);
     }
 
     public List<User> getListOfCommonFriends(int id, int otherId) {

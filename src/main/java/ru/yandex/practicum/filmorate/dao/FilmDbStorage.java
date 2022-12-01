@@ -27,37 +27,37 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public void create(Film data) {
+    public void create(Film film) {
         String sql = "INSERT INTO films (NAME, DESCRIPTION, RELEASE_DATE, DURATION, RATE, MPA_ID) " +
                 "VALUES (?,?,?,?,?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(sql, new String[]{"film_id"});
-            stmt.setString(1, data.getName());
-            stmt.setString(2, data.getDescription());
-            stmt.setDate(3, Date.valueOf(data.getReleaseDate()));
-            stmt.setInt(4, data.getDuration());
-            stmt.setInt(5, data.getRate());
-            stmt.setInt(6, data.getMpa().getId());
+            stmt.setString(1, film.getName());
+            stmt.setString(2, film.getDescription());
+            stmt.setDate(3, Date.valueOf(film.getReleaseDate()));
+            stmt.setInt(4, film.getDuration());
+            stmt.setInt(5, film.getRate());
+            stmt.setInt(6, film.getMpa().getId());
             return stmt;
         }, keyHolder);
-        data.setId(keyHolder.getKey().intValue());
-        saveFilmGenreId(data);
+        film.setId(keyHolder.getKey().intValue());
+        saveFilmGenreId(film);
     }
 
     @Override
-    public void update(Film data) {
+    public void update(Film film) {
         String sql = "UPDATE films SET NAME=?, DESCRIPTION=?, RELEASE_DATE=?, DURATION=?, RATE=?, MPA_ID=? where FILM_ID =?";
-        jdbcTemplate.update(sql, data.getName(),
-                data.getDescription(), data.getReleaseDate(), data.getDuration(),
-                data.getRate(), data.getMpa().getId(), data.getId());
-        saveFilmGenreId(data);
+        jdbcTemplate.update(sql, film.getName(),
+                film.getDescription(), film.getReleaseDate(), film.getDuration(),
+                film.getRate(), film.getMpa().getId(), film.getId());
+        saveFilmGenreId(film);
     }
 
     @Override
-    public void delete(Film data) {
+    public void delete(Film film) {
         String sql = "DELETE FROM films WHERE FILM_ID = ?";
-        jdbcTemplate.update(sql, data.getId());
+        jdbcTemplate.update(sql, film.getId());
     }
 
     @Override
@@ -83,10 +83,10 @@ public class FilmDbStorage implements FilmStorage {
     }
 
 
-    private void saveFilmGenreId(Film data) {
-        final int filmId = data.getId();
+    private void saveFilmGenreId(Film film) {
+        final int filmId = film.getId();
         jdbcTemplate.update("delete from FILM_GENRES where FILM_ID=?", filmId);
-        List<Genre> genres = new ArrayList<>(data.getGenres());
+        List<Genre> genres = new ArrayList<>(film.getGenres());
         if (genres.isEmpty()) {
             return;
         }
